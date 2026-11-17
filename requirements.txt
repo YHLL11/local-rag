@@ -1,0 +1,35 @@
+# ============================================================
+# Local-RAG 依赖清单（版本宽松，便于在不同 Windows / Python 3.12 环境安装）
+# 安装： pip install -r requirements.txt
+# 说明：本清单只装“代码依赖”，模型权重在首次运行时由
+#       sentence-transformers / Ollama 自动下载，不在此处。
+# ============================================================
+
+# --- 向量库 ---
+chromadb>=0.5.0            # 本地持久化向量数据库（无需启动独立服务）
+
+# --- Embedding 与重排 ---
+sentence-transformers>=3.0.0   # 中文小模型 bge-small-zh-v1.5 做向量化；cross-encoder 做 rerank
+rank-bm25>=0.2.2               # BM25 稀疏检索（关键词召回）
+jieba>=0.42.1                  # 中文分词（BM25 用；未安装时代码会自动退化为单字切分）
+
+# --- 后端 API ---
+fastapi>=0.110.0
+uvicorn[standard]>=0.29.0
+
+# --- 前端界面 ---
+streamlit>=1.35.0
+
+# --- 配置 ---
+pyyaml>=6.0
+python-dotenv>=1.0.0
+
+# --- 文档解析 ---
+pypdf>=4.0.0            # PDF 文本抽取
+python-docx>=1.1.0      # Word(.docx) 文本抽取
+
+# --- 调用本地 / 云端 LLM 的 HTTP 客户端（流式解析） ---
+requests>=2.31.0
+
+# --- 可选：按 token 数切分（tiktoken），不装则退化为按字符切分 ---
+tiktoken>=0.7.0

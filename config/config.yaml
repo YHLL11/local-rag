@@ -1,0 +1,39 @@
+# ---------- 文档切分（ingestion） ----------
+chunking:
+  # 每个块的目标大小。单位由 chunk_unit 决定：
+  # char  = 按字符数；token = 按 token 数
+  chunk_size: 1800
+  # 相邻块重叠字数，保证跨块语义不断裂；一般取 chunk_size 的 10%~20%
+  chunk_overlap: 80
+  chunk_unit: char
+
+  # 按文件名单独覆盖 chunk_size
+  # 左侧是匹配模式，右侧是该文件专用的 chunk_size；命中即用，未命中用上面的默认值。
+  # 支持通配符：*.pdf 匹配所有 PDF；"合同.docx" 精确匹配；"小说/*" 匹配某子目录。
+  # 大文档（如长篇 PDF）可给更大的 chunk_size，减少块数、加快入库。
+  per_file:
+    # "*.pdf": 800
+    # "合同.docx": 600
+
+# ---------- 检索（retrieval） ----------
+retrieval:
+  dense_top_k: 10      # 稠密向量（语义）召回数量
+  sparse_top_k: 10    # BM25（关键词）召回数量
+  final_top_k: 5      # 融合 / 重排后最终送进 Prompt 的块数量
+  rrf_k: 60            # RRF 融合常数（标准值 60，一般不用改）
+
+# ---------- 重排（rerank） ----------
+rerank:
+  # enabled=true 时首次会自动从 hf-mirror 下载模型；下载失败/离线会自动跳过，不影响问答。
+  # 下不动或不想用，设 false 直接关闭。
+  enabled: true
+  # bge-reranker-base：标准 cross-encoder，镜像可下载、CPU 可跑（约 1.1GB），多语含中文。
+  model: BAAI/bge-reranker-base
+  # 低于该分数的块被过滤；0.0 表示不过滤，只按分数排序
+  threshold: 0.0
+
+# ---------- 路径 ----------
+paths:
+  data_dir: data
+  chroma_dir: data/chroma
+

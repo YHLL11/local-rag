@@ -1,0 +1,31 @@
+# ---------- Python ----------
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.pytest_cache/
+
+# ---------- 虚拟环境 ----------
+venv/
+.venv/
+env/
+
+# ---------- 本地机密（绝不提交） ----------
+.env
+
+# ---------- 运行时生成的数据 ----------
+data/raw/                 # 用户自己丢进来的原始文档（如需保留可单独放开）
+data/chroma/              # ChromaDB 向量库持久化目录
+*.sqlite3
+
+# ---------- 模型缓存（可选，默认 sentence-transformers 缓存到用户目录） ----------
+.cache/
+models/
+
+# ---------- 评估报告等产物 ----------
+eval/report*.md
+eval/*.csv
+
+# ---------- 编辑器 ----------
+.vscode/
+.idea/
